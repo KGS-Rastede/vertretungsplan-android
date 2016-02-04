@@ -1,1 +1,1 @@
-# vertretungsplan-android
+# Vertretungsplan App für die KGS-Rastede (Android)
