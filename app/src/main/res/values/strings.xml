@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">KGS Rastede Vertretungsplan</string>
-    <string name="hint_name">Benutzername</string>
-    <string name="hint_password">Passwort</string>
+    <string name="app_name">KGS Vertretungsplan</string>
     <string name="btn_login">LOGIN</string>
+    <string name="et_login_hint_1">Benutzername</string>
+    <string name="et_login_hint_2">Passwort</string>
+    <string name="action_logout">Sign out</string>
 
 </resources>

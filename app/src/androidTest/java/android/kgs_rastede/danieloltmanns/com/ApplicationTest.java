@@ -1,4 +1,4 @@
-package kgsrastede.danieloltmanns.com.kgsrastedevertretungsplan;
+package android.kgs_rastede.danieloltmanns.com;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,9 +1,13 @@
-package kgsrastede.danieloltmanns.com.kgsrastedevertretungsplan;
+package android.kgs_rastede.danieloltmanns.com;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +16,12 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if(!prefs.getBoolean("logged",false)) {
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
+        }
+
     }
 
 
@@ -30,7 +40,12 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            prefs.edit().putString("user","").putBoolean("logged",false).putString("login_resp","").commit();
+            Toast.makeText(getApplicationContext(), "Erfolgreich Ausgeloggt", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
             return true;
         }
 
