@@ -7,10 +7,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    Button btn_sek1;
+    Button btn_sek2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +26,22 @@ public class MainActivity extends ActionBarActivity {
             Intent intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
         }
-
+        btn_sek1 = (Button)findViewById(R.id.btn_sek1);
+        btn_sek1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,View1Activity.class);
+                startActivity(intent);
+            }
+        });
+        btn_sek2 = (Button)findViewById(R.id.btn_sek2);
+        btn_sek2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,View2Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

@@ -1,0 +1,146 @@
+package android.kgs_rastede.danieloltmanns.com;
+
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
+
+
+public class View1Activity extends ActionBarActivity {
+
+    ListView listView;
+    private View1ListAdapter m_adapter;
+    private Runnable viewParts;
+    private ArrayList<View1ListItem> m_parts = new ArrayList<View1ListItem>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_view1);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String user = prefs.getString("user","");
+        String pass = prefs.getString("pass","");
+        listView = (ListView)findViewById(R.id.listView);
+
+        m_adapter = new View1ListAdapter(this, R.layout.view_1_item, m_parts);
+        listView.setAdapter(m_adapter);
+
+        try {
+            String resp = new GetTask().execute(user,pass).get();
+            JSONObject j_main = new JSONObject(resp);
+            JSONArray j_subs = j_main.getJSONArray("substitutions");
+            for(int i = 0;i < j_subs.length();i++) {
+                JSONArray j_day1 = j_subs.getJSONArray(i);
+                for(int day1_i = 0; day1_i < j_day1.length();day1_i++) {
+                    JSONObject j_day1_o = j_day1.getJSONObject(day1_i);
+                    m_adapter.add(new View1ListItem(j_day1_o.getString("date"),j_day1_o.getString("hour"),j_day1_o.getString("subject"),j_day1_o.getString("teacher"),j_day1_o.getString("status"),j_day1_o.getString("room"),j_day1_o.getString("supply"),j_day1_o.getString("postponement"),j_day1_o.getString("notice")));
+                }
+            }
+        } catch (InterruptedException | ExecutionException | JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_view1, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    public class GetTask extends AsyncTask<String,String,String> {
+        @Override
+        protected String doInBackground(String... data) {
+            // Create a new HttpClient and Post Header
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpGet httpget = new HttpGet("http://www.kgsrastede.de/gp-info/substitutions/request.php?action=getEverything&action=getEverything");
+
+            CookieStore cookieStore = new BasicCookieStore();
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_YEAR, 365);
+            Date date = calendar.getTime();
+
+            BasicClientCookie cookie = new BasicClientCookie("OUTPUTPROFILE", "11");
+            cookie.setDomain("www.kgsrastede.de");
+            cookie.setPath("/gp-info/substitutions");
+            cookie.setExpiryDate(date);
+
+            BasicClientCookie cookie2 = new BasicClientCookie("PASS",data[1]);
+            cookie2.setDomain("www.kgsrastede.de");
+            cookie2.setPath("/");
+            cookie2.setExpiryDate(date);
+
+            BasicClientCookie cookie3 = new BasicClientCookie("USER",data[0]);
+            cookie3.setDomain("www.kgsrastede.de");
+            cookie3.setPath("/");
+            cookie3.setExpiryDate(date);
+
+            cookieStore.addCookie(cookie3);
+            cookieStore.addCookie(cookie2);
+            cookieStore.addCookie(cookie);
+
+            // Create local HTTP context
+            HttpContext localContext = new BasicHttpContext();
+            // Bind custom cookie store to the local context
+            localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+
+            try {
+                //execute http post
+                HttpResponse response = httpclient.execute(httpget,localContext);
+                String responseStr = EntityUtils.toString(response.getEntity());
+
+                Log.v("response ", responseStr);
+                return responseStr;
+            } catch (IOException e) {
+                Log.e("Error",e.toString());
+            }
+            return null;
+        }
+    }
+
+}
