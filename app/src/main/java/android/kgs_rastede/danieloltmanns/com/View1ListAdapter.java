@@ -7,7 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Daniel Oltmanns on 14.02.2016.
@@ -39,7 +42,10 @@ public class View1ListAdapter extends ArrayAdapter<View1ListItem> {
             TextView tv_room = (TextView)v.findViewById(R.id.tv_room);
             TextView tv_supply = (TextView)v.findViewById(R.id.tv_supply);
 
-            tv_date.setText(i.getDate());
+            Date date = new Date(Long.parseLong(i.getDate())*1000);
+            SimpleDateFormat df = new SimpleDateFormat("d.M.yyyy", Locale.GERMANY);
+            tv_date.setText(df.format(date));
+
             tv_hour.setText(i.getHour());
             tv_subject.setText(i.getSubject());
             tv_teacher.setText(i.getTeacher());
