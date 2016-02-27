@@ -1,5 +1,6 @@
 package android.kgs_rastede.danieloltmanns.com;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -40,6 +41,8 @@ public class LoginActivity extends ActionBarActivity {
     EditText et_user;
     EditText et_pass;
 
+    ProgressDialog pDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,27 +57,7 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v) {
                 String p_user = et_user.getText().toString().trim();
                 String p_pass = et_pass.getText().toString().trim();
-                try {
-                    String resp = new LoginTask().execute(p_user,p_pass).get();
-                    JSONObject j_o = new JSONObject(resp);
-                    if(j_o.getString("loginstatus").equals("ok")) {
-                        //LOGIN successful
-                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                        try {
-                            prefs.edit().putString("user", p_user).putString("pass",SHA1(p_pass)).putBoolean("logged", true).putString("login_resp",resp).commit();
-                        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(getApplicationContext(),"Erfolgreicher Login "+resp,Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    } else {
-                        //WRONG LOGIN
-                        Toast.makeText(getApplicationContext(),"FALSCHER Login",Toast.LENGTH_LONG).show();
-                    }
-                } catch (InterruptedException | ExecutionException | JSONException e) {
-                    e.printStackTrace();
-                }
+                new LoginTask().execute(p_user,p_pass);
             }
         });
     }
@@ -104,7 +87,17 @@ public class LoginActivity extends ActionBarActivity {
 
     public class LoginTask extends AsyncTask<String,String,String> {
         @Override
-        protected String doInBackground(String... data) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(LoginActivity.this);
+            pDialog.setMessage("Login ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(final String... data) {
             // Create a new HttpClient and Post Header
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost("http://www.kgsrastede.de/gp-info/substitutions/login.php?action=login");
@@ -117,14 +110,50 @@ public class LoginActivity extends ActionBarActivity {
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 //execute http post
                 HttpResponse response = httpclient.execute(httppost);
-                String responseStr = EntityUtils.toString(response.getEntity());
+                final String resp = EntityUtils.toString(response.getEntity());
 
-                Log.v("response ", responseStr);
-                return responseStr;
+                Log.v("response ", resp);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject j_o = null;
+                        try {
+                            j_o = new JSONObject(resp);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            assert j_o != null;
+                            if(j_o.getString("loginstatus").equals("ok")) {
+                                //LOGIN successful
+                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                try {
+                                    prefs.edit().putString("user", data[0]).putString("pass", SHA1(data[1])).putBoolean("logged", true).putString("login_resp",resp).commit();
+                                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(getApplicationContext(),"Erfolgreicher Login "+resp,Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            } else {
+                                //WRONG LOGIN
+                                Toast.makeText(getApplicationContext(),"FALSCHER Login",Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                return resp;
             } catch (IOException e) {
                 Log.e("Error",e.toString());
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(final String resp) {
+            pDialog.dismiss();
         }
     }
 

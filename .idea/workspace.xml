@@ -39,16 +39,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="View1Activity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="View1Activity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/android/kgs_rastede/danieloltmanns/com/View1Activity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8095238" vertical-offset="0" max-vertical-offset="3026">
-              <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1100" max-vertical-offset="3026">
+              <caret line="82" column="8" selection-start-line="82" selection-start-column="8" selection-end-line="90" selection-end-column="9" />
               <folding>
+                <element signature="imports" expanded="true" />
                 <element signature="e#5219#6291#0" expanded="true" />
                 <element signature="e#6276#6277#0" expanded="true" />
                 <element signature="e#6357#6358#0" expanded="true" />
                 <element signature="e#6405#6406#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoginActivity.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/android/kgs_rastede/danieloltmanns/com/LoginActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.43373495" vertical-offset="1954" max-vertical-offset="2618">
+              <caret line="130" column="52" selection-start-line="130" selection-start-column="52" selection-end-line="130" selection-end-column="52" />
+              <folding>
+                <element signature="e#1716#2026#0" expanded="true" />
+                <element signature="e#2015#2016#0" expanded="true" />
+                <element signature="e#3590#3605#0" expanded="true" />
+                <element signature="e#4101#5864#0" expanded="true" />
+                <element signature="e#5845#5846#0" expanded="true" />
+                <element signature="e#6103#6104#0" expanded="true" />
+                <element signature="e#6144#6145#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -707,7 +726,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_view_i.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/android/kgs_rastede/danieloltmanns/com/LoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/kgs_rastede/danieloltmanns/com/View1ListItem.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/view_1_item.xml" />
@@ -723,6 +741,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/android/kgs_rastede/danieloltmanns/com/View2Activity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_view2.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/android/kgs_rastede/danieloltmanns/com/View1Activity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/android/kgs_rastede/danieloltmanns/com/LoginActivity.java" />
       </list>
     </option>
   </component>
@@ -1074,6 +1093,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2158" max-vertical-offset="2771">
           <caret line="153" column="9" selection-start-line="141" selection-start-column="7" selection-end-line="153" selection-end-column="9" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="e#5219#6291#0" expanded="true" />
             <element signature="e#6276#6277#0" expanded="true" />
             <element signature="e#6357#6358#0" expanded="true" />
@@ -1149,6 +1169,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2771">
           <caret line="153" column="9" selection-start-line="141" selection-start-column="7" selection-end-line="153" selection-end-column="9" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="e#5219#6291#0" expanded="true" />
             <element signature="e#6276#6277#0" expanded="true" />
             <element signature="e#6357#6358#0" expanded="true" />
@@ -1273,13 +1294,6 @@
       </provider>
       <provider selected="true" editor-type-id="android-designer">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/kgs_rastede/danieloltmanns/com/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="462" max-vertical-offset="2142">
-          <caret line="65" column="48" selection-start-line="65" selection-start-column="48" selection-end-line="65" selection-end-column="48" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
@@ -1408,13 +1422,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/android/kgs_rastede/danieloltmanns/com/View1Activity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8095238" vertical-offset="0" max-vertical-offset="3026">
-          <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1100" max-vertical-offset="3026">
+          <caret line="82" column="8" selection-start-line="82" selection-start-column="8" selection-end-line="90" selection-end-column="9" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="e#5219#6291#0" expanded="true" />
             <element signature="e#6276#6277#0" expanded="true" />
             <element signature="e#6357#6358#0" expanded="true" />
             <element signature="e#6405#6406#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/android/kgs_rastede/danieloltmanns/com/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.43373495" vertical-offset="1954" max-vertical-offset="2618">
+          <caret line="130" column="52" selection-start-line="130" selection-start-column="52" selection-end-line="130" selection-end-column="52" />
+          <folding>
+            <element signature="e#1716#2026#0" expanded="true" />
+            <element signature="e#2015#2016#0" expanded="true" />
+            <element signature="e#3590#3605#0" expanded="true" />
+            <element signature="e#4101#5864#0" expanded="true" />
+            <element signature="e#5845#5846#0" expanded="true" />
+            <element signature="e#6103#6104#0" expanded="true" />
+            <element signature="e#6144#6145#0" expanded="true" />
           </folding>
         </state>
       </provider>
