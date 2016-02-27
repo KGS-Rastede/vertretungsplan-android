@@ -1,5 +1,6 @@
 package android.kgs_rastede.danieloltmanns.com;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,8 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
@@ -31,41 +30,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 
 public class View1Activity extends ActionBarActivity {
 
     ListView listView;
     private View1ListAdapter m_adapter;
-    private ArrayList<View1ListItem> m_parts = new ArrayList<View1ListItem>();
+    private ArrayList<View1ListItem> m_parts = new ArrayList<>();
+    ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view1);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String user = prefs.getString("user","");
-        String pass = prefs.getString("pass","");
+        final String user = prefs.getString("user","");
+        final String pass = prefs.getString("pass","");
         listView = (ListView)findViewById(R.id.listView);
 
         m_adapter = new View1ListAdapter(this, R.layout.view_1_item, m_parts);
         listView.setAdapter(m_adapter);
 
-        try {
-            String resp = new GetTask().execute(user,pass).get();
-            JSONObject j_main = new JSONObject(resp);
-            JSONArray j_subs = j_main.getJSONArray("substitutions");
-            for(int i = 0;i < j_subs.length();i++) {
-                JSONArray j_day = j_subs.getJSONArray(i);
-                for(int day_i = 0; day_i < j_day.length();day_i++) {
-                    JSONObject j_day_o = j_day.getJSONObject(day_i);
-                    m_adapter.add(new View1ListItem(j_day_o.getString("date"),j_day_o.getString("hour"),j_day_o.getString("subject"),j_day_o.getString("teacher"),j_day_o.getString("status"),j_day_o.getString("room"),j_day_o.getString("supply"),j_day_o.getString("postponement"),j_day_o.getString("notice")));
-                }
-            }
-        } catch (InterruptedException | ExecutionException | JSONException e) {
-            e.printStackTrace();
-        }
+        convertData(user,pass);
 
         m_adapter.notifyDataSetChanged();
 
@@ -94,6 +80,16 @@ public class View1Activity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     public class GetTask extends AsyncTask<String,String,String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(View1Activity.this);
+            pDialog.setMessage("Lade Daten ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
         @Override
         protected String doInBackground(String... data) {
             // Create a new HttpClient and Post Header
@@ -133,15 +129,44 @@ public class View1Activity extends ActionBarActivity {
             try {
                 //execute http post
                 HttpResponse response = httpclient.execute(httpget,localContext);
-                String responseStr = EntityUtils.toString(response.getEntity());
+                String resp = EntityUtils.toString(response.getEntity());
 
-                Log.v("response ", responseStr);
-                return responseStr;
+                Log.v("response ", resp);
+
+                return resp;
+
             } catch (IOException e) {
                 Log.e("Error",e.toString());
             }
             return null;
         }
+
+        @Override
+        protected void onPostExecute(final String resp) {
+            pDialog.dismiss();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        JSONObject j_main = new JSONObject(resp);
+                        JSONArray j_subs = j_main.getJSONArray("substitutions");
+                        for(int i = 0;i < j_subs.length();i++) {
+                            JSONArray j_day = j_subs.getJSONArray(i);
+                            for(int day_i = 0; day_i < j_day.length();day_i++) {
+                                JSONObject j_day_o = j_day.getJSONObject(day_i);
+                                m_adapter.add(new View1ListItem(j_day_o.getString("date"),j_day_o.getString("hour"),j_day_o.getString("subject"),j_day_o.getString("teacher"),j_day_o.getString("status"),j_day_o.getString("room"),j_day_o.getString("supply"),j_day_o.getString("postponement"),j_day_o.getString("notice")));
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    void convertData(String user,String pass) {
+        new GetTask().execute(user,pass);
     }
 
 }

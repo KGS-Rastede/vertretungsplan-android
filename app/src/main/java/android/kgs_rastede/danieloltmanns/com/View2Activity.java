@@ -2,31 +2,32 @@ package android.kgs_rastede.danieloltmanns.com;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
 public class View2Activity extends ActionBarActivity {
+
+    ListView listView;
+    private View2ListAdapter m_adapter;
+    private ArrayList<View2ListItem> m_parts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,15 @@ public class View2Activity extends ActionBarActivity {
         user = user.substring(0,1).toUpperCase()+user.substring(1,2).toLowerCase()+user.substring(2,3).toUpperCase()+user.substring(3,4).toLowerCase()+user.substring(4);
         try {
             String resp = new GetTask().execute(user).get();
+            try {
+                JSONObject j_main = new JSONObject(resp);
+                JSONObject j_subs = j_main.getJSONObject("entries");
+                for(int i = 0;i < j_subs.length();i++) {
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
