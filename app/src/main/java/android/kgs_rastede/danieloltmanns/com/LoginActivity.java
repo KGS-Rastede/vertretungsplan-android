@@ -132,7 +132,7 @@ public class LoginActivity extends ActionBarActivity {
                                 } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                                     e.printStackTrace();
                                 }
-                                Toast.makeText(getApplicationContext(),"Erfolgreicher Login "+resp,Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Erfolgreicher Login",Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else {
