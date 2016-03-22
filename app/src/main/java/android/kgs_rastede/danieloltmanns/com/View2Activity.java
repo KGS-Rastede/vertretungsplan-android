@@ -1,5 +1,6 @@
 package android.kgs_rastede.danieloltmanns.com;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ public class View2Activity extends ActionBarActivity {
     private View2ListAdapter m_adapter;
     private ArrayList<View2ListItem> m_parts = new ArrayList<>();
 
+    ProgressDialog pDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,20 +40,8 @@ public class View2Activity extends ActionBarActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String user = prefs.getString("user","");
         user = user.substring(0,1).toUpperCase()+user.substring(1,2).toLowerCase()+user.substring(2,3).toUpperCase()+user.substring(3,4).toLowerCase()+user.substring(4);
-        try {
-            String resp = new GetTask().execute(user).get();
-            try {
-                JSONObject j_main = new JSONObject(resp);
-                JSONObject j_subs = j_main.getJSONObject("entries");
-                for(int i = 0;i < j_subs.length();i++) {
 
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        new GetTask().execute(user);
     }
 
 
@@ -78,6 +69,16 @@ public class View2Activity extends ActionBarActivity {
 
     public class GetTask extends AsyncTask<String,String,String> {
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(View2Activity.this);
+            pDialog.setMessage("Lade Daten ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
         protected String doInBackground(String... data) {
             // Create a new HttpClient and Post Header
             HttpClient httpclient = new DefaultHttpClient();
@@ -94,6 +95,25 @@ public class View2Activity extends ActionBarActivity {
                 Log.e("Error",e.toString());
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(final String resp) {
+            pDialog.dismiss();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        JSONObject j_main = new JSONObject(resp);
+                        JSONObject j_subs = j_main.getJSONObject("entries");
+                        for(int i = 0;i < j_subs.length();i++) {
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class View1Activity extends ActionBarActivity {
@@ -150,11 +152,15 @@ public class View1Activity extends ActionBarActivity {
                     try {
                         JSONObject j_main = new JSONObject(resp);
                         JSONArray j_subs = j_main.getJSONArray("substitutions");
-                        for(int i = 0;i < j_subs.length();i++) {
-                            JSONArray j_day = j_subs.getJSONArray(i);
-                            for(int day_i = 0; day_i < j_day.length();day_i++) {
-                                JSONObject j_day_o = j_day.getJSONObject(day_i);
-                                m_adapter.add(new View1ListItem(j_day_o.getString("date"),j_day_o.getString("hour"),j_day_o.getString("subject"),j_day_o.getString("teacher"),j_day_o.getString("status"),j_day_o.getString("room"),j_day_o.getString("supply"),j_day_o.getString("postponement"),j_day_o.getString("notice")));
+                        if (j_subs.length() == 0) {
+                            Toast.makeText(getApplicationContext(), "Keine Daten vorhanden", Toast.LENGTH_LONG).show();
+                        } else {
+                            for (int i = 0; i < j_subs.length(); i++) {
+                                JSONArray j_day = j_subs.getJSONArray(i);
+                                for (int day_i = 0; day_i < j_day.length(); day_i++) {
+                                    JSONObject j_day_o = j_day.getJSONObject(day_i);
+                                    m_adapter.add(new View1ListItem(j_day_o.getString("date"), j_day_o.getString("hour"), j_day_o.getString("subject"), j_day_o.getString("teacher"), j_day_o.getString("status"), j_day_o.getString("room"), j_day_o.getString("supply"), j_day_o.getString("postponement"), j_day_o.getString("notice")));
+                                }
                             }
                         }
                     } catch (JSONException e) {
