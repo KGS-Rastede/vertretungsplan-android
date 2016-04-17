@@ -18,6 +18,7 @@ public class View1ListItem {
     public View1ListItem() {}
 
     public View1ListItem(String date,String hour,String subject,String status,String room,String teacher,String supply,String postponement,String notice) {
+        //Daten werden in Objekt abgespeichert
         this.date = date;
         this.hour = hour;
         this.subject = subject;

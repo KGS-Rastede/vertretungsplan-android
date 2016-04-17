@@ -33,10 +33,11 @@ public class View2ListAdapter extends ArrayAdapter<View2ListItem> {
         View2ListItem i = objects.get(pos);
 
         if(i != null) {
+            //Textview wird geladen
             TextView tv_lesson = (TextView)v.findViewById(R.id.tv_info);
-
+            //Text wird in die Textview gespeichert
             tv_lesson.setText(i.getInfo());
-
+            //Text-Align wird auf center gesetzt
             tv_lesson.setGravity(Gravity.CENTER);
         }
 

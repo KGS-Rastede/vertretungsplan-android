@@ -26,6 +26,7 @@ public class MainActivity extends ActionBarActivity {
             Intent intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
         }
+        //Button On Click listener werden erstellt
         btn_sek1 = (Button)findViewById(R.id.btn_sek1);
         btn_sek1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +62,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            //Logout Prozess
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             prefs.edit().putString("user","").putBoolean("logged",false).putString("login_resp","").commit();
             Toast.makeText(getApplicationContext(), "Erfolgreich Ausgeloggt", Toast.LENGTH_LONG).show();

@@ -79,18 +79,19 @@ public class LoginActivity extends ActionBarActivity {
 
         @Override
         protected String doInBackground(final String... data) {
-            // Create a new HttpClient and Post Header
+            //HTTPClient wird erstellt
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost("http://www.kgsrastede.de/gp-info/substitutions/login.php?action=login");
 
             try {
-                //add data
+                //Daten für POST werden erstellt
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
                 nameValuePairs.add(new BasicNameValuePair("user", data[0]));
                 nameValuePairs.add(new BasicNameValuePair("pass", data[1]));
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                //execute http post
+                //HTTP Post wird ausgeführt
                 HttpResponse response = httpclient.execute(httppost);
+                //Daten werden gespeichert
                 final String resp = EntityUtils.toString(response.getEntity());
 
                 Log.v("response ", resp);
@@ -134,6 +135,7 @@ public class LoginActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(final String resp) {
+            //Wenn der Task zu ende ist wird der Lade Dialog geschlossen.
             pDialog.dismiss();
         }
     }

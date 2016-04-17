@@ -34,6 +34,7 @@ public class View1ListAdapter extends ArrayAdapter<View1ListItem> {
         View1ListItem i = objects.get(pos);
 
         if(i != null) {
+            //Textviews erden geladen und abgeändert
             TextView tv_date = (TextView)v.findViewById(R.id.tv_date);
             TextView tv_hour = (TextView)v.findViewById(R.id.tv_hour);
             TextView tv_subject = (TextView)v.findViewById(R.id.tv_subject);

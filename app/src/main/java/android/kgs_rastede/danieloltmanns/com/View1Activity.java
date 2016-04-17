@@ -45,16 +45,21 @@ public class View1Activity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view1);
+        //Gespeicherte Login Daten werden abgerufen
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final String user = prefs.getString("user","");
         final String pass = prefs.getString("pass","");
+
+        //Listview wird geladen
         listView = (ListView)findViewById(R.id.listView);
 
+        //Adapter wird erstellt
         m_adapter = new View1ListAdapter(this, R.layout.view_1_item, m_parts);
         listView.setAdapter(m_adapter);
 
+        //Daten werden geladen
         convertData(user,pass);
-
+        //Listview wird aktualisiert
         m_adapter.notifyDataSetChanged();
 
     }
@@ -63,6 +68,7 @@ public class View1Activity extends ActionBarActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            //Lade Dialog wird gezeigt
             pDialog = new ProgressDialog(View1Activity.this);
             pDialog.setMessage("Lade Daten ...");
             pDialog.setIndeterminate(false);
@@ -72,10 +78,11 @@ public class View1Activity extends ActionBarActivity {
 
         @Override
         protected String doInBackground(String... data) {
-            // Create a new HttpClient and Post Header
+            // HTTPClient wird erstellt
             HttpClient httpclient = new DefaultHttpClient();
             HttpGet httpget = new HttpGet("http://www.kgsrastede.de/gp-info/substitutions/request.php?action=getEverything&action=getEverything");
 
+            //Cookies für Login Daten werden erstellt
             CookieStore cookieStore = new BasicCookieStore();
 
             Calendar calendar = Calendar.getInstance();
@@ -101,16 +108,16 @@ public class View1Activity extends ActionBarActivity {
             cookieStore.addCookie(cookie2);
             cookieStore.addCookie(cookie);
 
-            // Create local HTTP context
             HttpContext localContext = new BasicHttpContext();
-            // Bind custom cookie store to the local context
+            //Cookies werden eingestellt
             localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 
             try {
-                //execute http post
+                //HTTP POST wird ausgeführt (Daten Abruf)
                 HttpResponse response = httpclient.execute(httpget,localContext);
                 String resp = EntityUtils.toString(response.getEntity());
 
+                //Daten werden in die Konsole geschieben
                 Log.v("response ", resp);
 
                 return resp;
@@ -123,11 +130,11 @@ public class View1Activity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(final String resp) {
-            pDialog.dismiss();
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
+                        //Daten werden geladen und konvertiert
                         JSONObject j_main = new JSONObject(resp);
                         JSONArray j_subs = j_main.getJSONArray("substitutions");
                         if (j_subs.length() == 0) {
@@ -137,6 +144,7 @@ public class View1Activity extends ActionBarActivity {
                                 JSONArray j_day = j_subs.getJSONArray(i);
                                 for (int day_i = 0; day_i < j_day.length(); day_i++) {
                                     JSONObject j_day_o = j_day.getJSONObject(day_i);
+                                    //Items werden zum Adapter hinzugefpgt
                                     m_adapter.add(new View1ListItem(j_day_o.getString("date"), j_day_o.getString("hour"), j_day_o.getString("subject"), j_day_o.getString("teacher"), j_day_o.getString("status"), j_day_o.getString("room"), j_day_o.getString("supply"), j_day_o.getString("postponement"), j_day_o.getString("notice")));
                                 }
                             }
@@ -146,6 +154,9 @@ public class View1Activity extends ActionBarActivity {
                     }
                 }
             });
+
+            //Dialog wird geschlossen
+            pDialog.dismiss();
         }
     }
 
