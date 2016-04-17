@@ -5,17 +5,14 @@ package android.kgs_rastede.danieloltmanns.com;
  */
 public class View2ListItem {
 
-    private String lesson;
-    private String room;
+    private String info;
 
     public View2ListItem() {}
 
     public View2ListItem(String infos) {
-        String[] info = infos.split(" - ");
-        this.lesson = info[0];
-        this.room = info[1];
+        infos = infos.replace(" - ", "\n");
+        this.info = infos;
     }
 
-    public String getLesson() { return this.lesson; }
-    public String getRoom() { return this.room; }
+    public String getInfo() { return this.info; }
 }

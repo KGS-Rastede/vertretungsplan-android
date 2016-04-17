@@ -1,6 +1,7 @@
 package android.kgs_rastede.danieloltmanns.com;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,11 @@ public class View2ListAdapter extends ArrayAdapter<View2ListItem> {
         View2ListItem i = objects.get(pos);
 
         if(i != null) {
-            TextView tv_lesson = (TextView)v.findViewById(R.id.tv_lesson);
-            TextView tv_room = (TextView)v.findViewById(R.id.tv_room);
+            TextView tv_lesson = (TextView)v.findViewById(R.id.tv_info);
 
-            tv_lesson.setText(i.getLesson());
-            tv_room.setText(i.getRoom());
+            tv_lesson.setText(i.getInfo());
+
+            tv_lesson.setGravity(Gravity.CENTER);
         }
 
         return v;
