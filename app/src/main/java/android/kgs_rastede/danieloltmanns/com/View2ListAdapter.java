@@ -1,6 +1,7 @@
 package android.kgs_rastede.danieloltmanns.com;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,12 +34,19 @@ public class View2ListAdapter extends ArrayAdapter<View2ListItem> {
         View2ListItem i = objects.get(pos);
 
         if(i != null) {
+            String info = "";
+            info = i.getInfo();
+            if(info.equals("Frei")) { info = ""; }
             //Textview wird geladen
             TextView tv_lesson = (TextView)v.findViewById(R.id.tv_info);
             //Text wird in die Textview gespeichert
-            tv_lesson.setText(i.getInfo());
+            tv_lesson.setText(info);
             //Text-Align wird auf center gesetzt
             tv_lesson.setGravity(Gravity.CENTER);
+
+            if(info.equals("Entfall")) { tv_lesson.setTextColor(Color.parseColor("#e74c3c")); }
+            else { tv_lesson.setTextColor(Color.parseColor("#000000")); }
+            tv_lesson.setBackgroundColor(Color.parseColor(i.getColor()));
         }
 
         return v;

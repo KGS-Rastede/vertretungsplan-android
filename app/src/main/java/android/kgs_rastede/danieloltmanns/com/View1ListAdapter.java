@@ -35,17 +35,21 @@ public class View1ListAdapter extends ArrayAdapter<View1ListItem> {
 
         if(i != null) {
             //Textviews erden geladen und abgeändert
-            TextView tv_date = (TextView)v.findViewById(R.id.tv_date);
-            TextView tv_hour = (TextView)v.findViewById(R.id.tv_hour);
-            TextView tv_subject = (TextView)v.findViewById(R.id.tv_subject);
-            TextView tv_teacher = (TextView)v.findViewById(R.id.tv_teacher);
-            TextView tv_status = (TextView)v.findViewById(R.id.tv_status);
-            TextView tv_room = (TextView)v.findViewById(R.id.tv_room);
-            TextView tv_supply = (TextView)v.findViewById(R.id.tv_supply);
+            TextView tv_date = (TextView) v.findViewById(R.id.tv_date);
+            TextView tv_hour = (TextView) v.findViewById(R.id.tv_hour);
+            TextView tv_subject = (TextView) v.findViewById(R.id.tv_subject);
+            TextView tv_teacher = (TextView) v.findViewById(R.id.tv_teacher);
+            TextView tv_status = (TextView) v.findViewById(R.id.tv_status);
+            TextView tv_room = (TextView) v.findViewById(R.id.tv_room);
+            TextView tv_supply = (TextView) v.findViewById(R.id.tv_supply);
 
-            Date date = new Date(Long.parseLong(i.getDate())*1000);
-            SimpleDateFormat df = new SimpleDateFormat("d.M.yyyy", Locale.GERMANY);
-            tv_date.setText(df.format(date));
+            if (i.getDate() != "") {
+                Date date = new Date(Long.parseLong(i.getDate()) * 1000);
+                SimpleDateFormat df = new SimpleDateFormat("d.M.yyyy", Locale.GERMANY);
+                tv_date.setText(df.format(date));
+            } else {
+                tv_date.setText("");
+            }
 
             tv_hour.setText(i.getHour());
             tv_subject.setText(i.getSubject());

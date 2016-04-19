@@ -22,11 +22,11 @@
             android:layout_marginBottom="10dp"
             android:background="@color/et_bg"
             android:hint="@string/et_login_hint_1"
-            android:inputType="textEmailAddress"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/bg_login"
-            android:textColorHint="@color/et_hint" />
+            android:textColorHint="@color/et_hint"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/et_pass"

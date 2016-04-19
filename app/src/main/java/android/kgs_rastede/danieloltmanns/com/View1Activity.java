@@ -139,6 +139,7 @@ public class View1Activity extends ActionBarActivity {
                         JSONArray j_subs = j_main.getJSONArray("substitutions");
                         if (j_subs.length() == 0) {
                             Toast.makeText(getApplicationContext(), "Keine Daten vorhanden", Toast.LENGTH_LONG).show();
+                            m_adapter.add(new View1ListItem("", "Keine","Daten","","","","","",""));
                         } else {
                             for (int i = 0; i < j_subs.length(); i++) {
                                 JSONArray j_day = j_subs.getJSONArray(i);
