@@ -12,9 +12,11 @@
         android:layout_height="wrap_content"
         android:text="SEK I"
         android:id="@+id/btn_sek1"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="153dp" />
+        android:layout_alignTop="@+id/btn_sek2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="51dp"
+        android:layout_marginStart="51dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -22,6 +24,16 @@
         android:text="SEK II"
         android:id="@+id/btn_sek2"
         android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/btn_sek1"
-        android:layout_alignStart="@+id/btn_sek1" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="66dp"
+        android:layout_marginEnd="66dp" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/ic_launcher"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

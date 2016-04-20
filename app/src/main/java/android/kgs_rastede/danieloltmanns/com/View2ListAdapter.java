@@ -45,7 +45,7 @@ public class View2ListAdapter extends ArrayAdapter<View2ListItem> {
             tv_lesson.setGravity(Gravity.CENTER);
 
             if(info.equals("Entfall")) { tv_lesson.setTextColor(Color.parseColor("#e74c3c")); }
-            else { tv_lesson.setTextColor(Color.parseColor("#000000")); }
+            else { tv_lesson.setTextColor(Color.parseColor("#ffffff")); }
             tv_lesson.setBackgroundColor(Color.parseColor(i.getColor()));
         }
 

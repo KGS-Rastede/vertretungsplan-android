@@ -2,6 +2,7 @@ package android.kgs_rastede.danieloltmanns.com;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -124,43 +125,55 @@ public class View2Activity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(final String resp) {
+            final boolean[] error = new boolean[1];
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         //Daten werden vom schelchten Format ins richtige umgewandelt
                         JSONObject j_main = new JSONObject(resp);
-                        JSONObject j_subs = j_main.getJSONObject("entries");
-                        for (Iterator it = j_subs.keys(); it.hasNext(); ) {
-                            String name = (String) it.next();
-                            JSONArray arr = j_subs.getJSONArray(name);
-                            for (int i = number; i < arr.length(); i++) {
-                                JSONArray arr2 = arr.getJSONArray(i);
-                                for (int i2 = 0; i2 < arr2.length(); i2++) {
-                                    int itemIndex = i2 + 5;
-                                    if (i2 > 0) {
-                                        itemIndex += i2 * 4;
+                        String j_error = j_main.getString("error");
+                        if(j_error == "") {
+                            JSONObject j_subs = j_main.getJSONObject("entries");
+                            for (Iterator it = j_subs.keys(); it.hasNext(); ) {
+                                String name = (String) it.next();
+                                JSONArray arr = j_subs.getJSONArray(name);
+                                for (int i = number; i < arr.length(); i++) {
+                                    JSONArray arr2 = arr.getJSONArray(i);
+                                    for (int i2 = 0; i2 < arr2.length(); i2++) {
+                                        int itemIndex = i2 + 5;
+                                        if (i2 > 0) {
+                                            itemIndex += i2 * 4;
+                                        }
+                                        if (i > 0) {
+                                            itemIndex += i;
+                                        }
+                                        days[itemIndex] = arr2.get(i2).toString();
                                     }
-                                    if (i > 0) {
-                                        itemIndex += i;
-                                    }
-                                    days[itemIndex] = arr2.get(i2).toString();
                                 }
+                                break;
                             }
-                            break;
+                        } else {
+                            error[0] = true;
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    //Items werden zum Adapter hinzugefügt
-                    String color = "";
-                    for (int i3 = 0; i3 < days.length; i3++) {
-                        if(i3 < 5) { color = "#1abc9c"; }
-                        if(i3 >= 5 && i3 < 15) { color = "#f1c40f"; }
-                        if(i3 >= 15 && i3 < 25) { color = "#3498db"; }
-                        if(i3 >= 25 && i3 < 35) { color = "#9b59b6"; }
-                        if(i3 >= 35 && i3 < 45) { color = "#bdc3c7"; }
-                        m_adapter.add(new View2ListItem(days[i3], color));
+
+                    if(!error[0]) {
+                        //Items werden zum Adapter hinzugefügt
+                        String color = "";
+                        for (int i3 = 0; i3 < days.length; i3++) {
+                            if (i3 < 5) { color = "#34495e"; }
+                            if (i3 >= 5 && i3 < 15) { color = "#3498db"; }
+                            if (i3 >= 15 && i3 < 25) { color = "#f39c12"; }
+                            if (i3 >= 25 && i3 < 35) { color = "#f1c40f"; }
+                            if (i3 >= 35 && i3 < 45) { color = "#1abc9c"; }
+                            m_adapter.add(new View2ListItem(days[i3], color));
+                        }
+                    } else {
+                        Intent in = new Intent(View2Activity.this, MainActivity.class);
+                        startActivity(in);
                     }
                 }
             });
