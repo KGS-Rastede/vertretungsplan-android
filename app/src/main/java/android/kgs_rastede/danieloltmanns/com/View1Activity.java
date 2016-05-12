@@ -2,6 +2,7 @@ package android.kgs_rastede.danieloltmanns.com;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -45,8 +48,14 @@ public class View1Activity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view1);
-        //Gespeicherte Login Daten werden abgerufen
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if(!prefs.getBoolean("logged",false)) {
+            Intent intent = new Intent(View1Activity.this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        //Gespeicherte Login Daten werden abgerufen
         final String user = prefs.getString("user","");
         final String pass = prefs.getString("pass","");
 
@@ -62,6 +71,35 @@ public class View1Activity extends ActionBarActivity {
         //Listview wird aktualisiert
         m_adapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            //Logout Prozess
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            prefs.edit().putString("user","").putBoolean("logged",false).putString("login_resp","").commit();
+            Toast.makeText(getApplicationContext(), "Erfolgreich Ausgeloggt", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(View1Activity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public class GetTask extends AsyncTask<String,String,String> {

@@ -115,7 +115,8 @@ public class LoginActivity extends ActionBarActivity {
                                     e.printStackTrace();
                                 }
                                 Toast.makeText(getApplicationContext(),"Erfolgreicher Login",Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, View1Activity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             } else {
                                 //WRONG LOGIN
